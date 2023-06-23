@@ -83,45 +83,41 @@ void frees(stack_t *head)
  */
 ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 {
-    ssize_t read;
+    char *buffer = NULL;
     size_t buffer_size = 0;
+    ssize_t read = 0;
     int c;
-    char *new_ptr = realloc(*lineptr, buffer_size);
-
-    if (*lineptr == NULL || *n == 0)
-    {
-        *n = 128;
-        *lineptr = malloc(*n);
-        if (*lineptr == NULL)
-        {
-            fprintf(stderr, "Error: Memory allocation failed\n");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    read = 0;
-    while ((c = fgetc(stream)) != EOF)
-    {
-        if ((size_t)(read + 1) >= *n)
-        {
-            buffer_size = (*n) * 2;
-            if (new_ptr == NULL)
-            {
-                fprintf(stderr, "Error: Memory allocation failed\n");
-                free(*lineptr);
-                exit(EXIT_FAILURE);
-            }
-            *lineptr = new_ptr;
-            *n = buffer_size;
-        }
-        (*lineptr)[read++] = (char)c;
-        if (c == '\n')
-            break;
-    }
-
-    if (read == 0 && feof(stream))
+    char *new_ptr = realloc(buffer, buffer_size);
+    
+    if (lineptr == NULL || n == NULL || stream == NULL) {
         return -1;
+    }
 
-    (*lineptr)[read] = '\0';
+    while ((c = fgetc(stream)) != EOF) {
+      if ((size_t)(read + 1) >= buffer_size) {
+            buffer_size += 128;
+            if (new_ptr == NULL) {
+                free(buffer);
+                return -1;
+            }
+            buffer = new_ptr;
+        }
+        buffer[read] = c;
+        read++;
+
+        if (c == '\n') {
+            break;
+        }
+    }
+
+    if (read == 0) {
+        free(buffer);
+        return -1;
+    }
+
+    buffer[read] = '\0';
+    *lineptr = buffer;
+    *n = buffer_size;
+
     return read;
 }
