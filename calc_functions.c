@@ -117,7 +117,7 @@ void mul_op(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * mod_op - Computes the rest of the division of the second top element by the top element
+ * mod_op - Computes the rest of the division
  * @stack: Double pointer to the head of the stack
  * @line_number: Line number being executed from the Monty file
  */

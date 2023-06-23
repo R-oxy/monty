@@ -83,41 +83,45 @@ void frees(stack_t *head)
  */
 ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 {
-    char *buffer = NULL;
-    size_t buffer_size = 0;
-    ssize_t read = 0;
-    int c;
-    char *new_ptr = realloc(buffer, buffer_size);
-    
-    if (lineptr == NULL || n == NULL || stream == NULL) {
-        return -1;
-    }
+	char *buffer = NULL;
+	size_t buffer_size = 0;
+	ssize_t read = 0;
+	int c;
+	char *new_ptr = realloc(buffer, buffer_size);
 
-    while ((c = fgetc(stream)) != EOF) {
-      if ((size_t)(read + 1) >= buffer_size) {
-            buffer_size += 128;
-            if (new_ptr == NULL) {
-                free(buffer);
-                return -1;
-            }
-            buffer = new_ptr;
-        }
-        buffer[read] = c;
-        read++;
+	if (lineptr == NULL || n == NULL || stream == NULL)
+	{
+		return (-1);
+	}
 
-        if (c == '\n') {
-            break;
-        }
-    }
+	while ((c = fgetc(stream)) != EOF)
+	{
+		if ((size_t)(read + 1) >= buffer_size)
+		{
+			buffer_size += 128;
+			if (new_ptr == NULL)
+			{
+				free(buffer);
+				return (-1);
+			}
+			buffer = new_ptr;
+		}
+		buffer[read] = c;
+		read++;
 
-    if (read == 0) {
-        free(buffer);
-        return -1;
-    }
+		if (c == '\n')
+			break;
+	}
 
-    buffer[read] = '\0';
-    *lineptr = buffer;
-    *n = buffer_size;
+	if (read == 0)
+	{
+		free(buffer);
+		return (-1);
+	}
 
-    return read;
+	buffer[read] = '\0';
+	*lineptr = buffer;
+	*n = buffer_size;
+
+	return (read);
 }
