@@ -1,0 +1,88 @@
+#include "monty.h"
+
+/**
+ * op_pchar - Prints the char at the top of the stack
+ * @stack: Double pointer to the head of the stack
+ * @line_number: Current line number in the Monty file
+ *
+ * Description: The integer stored at the top of the stack is treated as the
+ *              ASCII value of the character to be printed. If the value is not
+ *              in the ASCII table, it prints an error message and exits with
+ *              EXIT_FAILURE. If the stack is empty, it also prints an error
+ *              message and exits with EXIT_FAILURE.
+ */
+void op_pchar(stack_t **stack, unsigned int line_number)
+{
+        if (*stack == NULL)
+        {
+                fprintf(stderr, "L%d: can't pchar, stack empty\n", line_number);
+                exit(EXIT_FAILURE);
+        }
+
+        if ((*stack)->n < 0 || (*stack)->n > 127)
+        {
+                fprintf(stderr, "L%d: can't pchar, value out of range\n", line_number);
+                exit(EXIT_FAILURE);
+        }
+
+        printf("%c\n", (*stack)->n);
+}
+
+/**
+ * op_pstr - Prints the string starting at the top of the stack
+ * @stack: Double pointer to the head of the stack
+ * @line_number: Current line number in the Monty file
+ *
+ * Description: The integer stored in each element of the stack is treated as
+ *              the ASCII value of the character to be printed. The string
+ *              stops when either the stack is over, the value of the element
+ *              is 0, or the value of the element is not in the ASCII table.
+ *              If the stack is empty, it only prints a new line.
+ */
+void op_pstr(stack_t **stack, unsigned int line_number)
+{
+        stack_t *temp = *stack;
+
+        (void)line_number;
+
+        while (temp != NULL && temp->n != 0 && (temp->n >= 0 && temp->n <= 127))
+        {
+                printf("%c", temp->n);
+                temp = temp->next;
+        }
+
+        printf("\n");
+}
+
+/**
+ * pint - Prints the value at the top of the stack
+ * @stack: Double pointer to the head of the stack
+ * @line_number: Line number of the opcode being executed
+ */
+void pint(stack_t **stack, unsigned int line_number)
+{
+    if (*stack == NULL)
+    {
+        fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("%d\n", (*stack)->n);
+}
+
+
+/**
+ * pall - Prints all the values on the stack.
+ * @stack: Double pointer to the head of the stack.
+ * @line_number: The line number in the Monty bytecodes file.
+ */
+void pall(stack_t **stack, unsigned int line_number)
+{
+    stack_t *current = *stack;
+
+    while (current != NULL)
+    {
+        printf("%d\n", current->n);
+        current = current->next;
+    }
+}

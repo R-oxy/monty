@@ -1,0 +1,42 @@
+#ifndef MONTY_H
+#define MONTY_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <ctype.h>
+
+#include "struct.h"
+
+#define DELIMITERS "\n\t\r "
+
+/* Function prototypes */
+ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream);
+void push(stack_t **stack, unsigned int line_number, char *n);
+void pall(stack_t **stack, unsigned int __attribute__((unused))line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
+void mod_op(stack_t **stack, unsigned int line_number);
+void mul_op(stack_t **stack, unsigned int line_number);
+void div_op(stack_t **stack, unsigned int line_number);
+void sub(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void op_pchar(stack_t **stack, unsigned int line_number);
+void op_pstr(stack_t **stack, unsigned int line_number);
+void op_rotl(stack_t **stack, unsigned int line_number);
+void op_rotr(stack_t **stack, unsigned int line_number);
+void op_stack(stack_t **stack, unsigned int line_number);
+void op_queue(stack_t **stack, unsigned int line_number);
+void op_nop(stack_t **stack, unsigned int line_number);
+int opcode_struct(char *opcode, stack_t **stack, unsigned int line_number);
+void frees(stack_t *head);
+size_t stack_length(stack_t **stack);
+void free_stack(stack_t **stack);
+void free_all(stack_t *stack, char *line, FILE *fp);
+
+#endif /* MONTY_H */
