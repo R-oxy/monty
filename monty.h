@@ -15,7 +15,6 @@
 #define DELIMITERS "\n\t\r "
 
 /* Function prototypes */
-ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream);
 void push(stack_t **stack, unsigned int line_number, char *n);
 void pall(stack_t **stack, unsigned int __attribute__((unused))line_number);
 void pint(stack_t **stack, unsigned int line_number);

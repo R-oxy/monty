@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	}
 
 	line_number = 0;
-	while ((read = custom_getline(&line, &len, fp)) != -1)
+	while ((read = getline(&line, &len, fp)) != -1)
 	{
 		line_number++;
 		opcode = strtok(line, DELIMITERS);
@@ -72,56 +72,4 @@ void frees(stack_t *head)
 		head = head->next;
 		free(tmp);
 	}
-}
-
-/**
- * custom_getline - Read a line from a file
- * @lineptr: Pointer to the buffer where the line will be stored
- * @n: Pointer to the variable that holds the size of the buffer
- * @stream: File stream to read from
- * Return: Number of characters read, or -1 on failure
- */
-ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream)
-{
-	char *buffer = NULL;
-	size_t buffer_size = 0;
-	ssize_t read = 0;
-	int c;
-	char *new_ptr = realloc(buffer, buffer_size);
-
-	if (lineptr == NULL || n == NULL || stream == NULL)
-	{
-		return (-1);
-	}
-
-	while ((c = fgetc(stream)) != EOF)
-	{
-		if ((size_t)(read + 1) >= buffer_size)
-		{
-			buffer_size += 128;
-			if (new_ptr == NULL)
-			{
-				free(buffer);
-				return (-1);
-			}
-			buffer = new_ptr;
-		}
-		buffer[read] = c;
-		read++;
-
-		if (c == '\n')
-			break;
-	}
-
-	if (read == 0)
-	{
-		free(buffer);
-		return (-1);
-	}
-
-	buffer[read] = '\0';
-	*lineptr = buffer;
-	*n = buffer_size;
-
-	return (read);
 }
